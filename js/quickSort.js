@@ -14,7 +14,9 @@ const setup = () => {
 
     //insert nodes into graph to be sorted at random
     for(let i = 0; i <= 10; i++) {
-        graph.appendChild(generateRandomNode());
+        let node = generateRandomNode();
+        node.id = i;
+        graph.appendChild(node);
     }
 };
 
@@ -35,8 +37,12 @@ const quickSort = (arr, start, end) => {
         quickSort(arr, pivot + 1, end);
     } 
 }
+
+//all nodes in graph
+let nodes = document.getElementsByClassName('node');
   
 const partition = (arr, start, end) => { 
+
     let pivot = end;
     let i = start - 1;
     let j = start;
@@ -45,6 +51,7 @@ const partition = (arr, start, end) => {
 
         //print each action of swapping in the algorithm
         console.log(arr);
+        console.log(nodes);
 
         if (arr[j] > arr[pivot]) {
             j++;
@@ -54,6 +61,7 @@ const partition = (arr, start, end) => {
             let temp = arr[i];
             arr[i] = arr[j];
             arr[j] = temp;
+            swap(nodes[i], nodes[j]);
             j++;
         }
     }
@@ -61,8 +69,17 @@ const partition = (arr, start, end) => {
     let temp = arr[i+1];
     arr[i+1] = arr[pivot];
     arr[pivot] = temp;
+    swap(nodes[i+1], nodes[pivot]);
 
     return i + 1;
+}
+
+//swap nodes
+const swap = (node1, node2) => {
+    const afterNode2 = node2.nextElementSibling;
+    const parent = node2.parentNode;
+    node1.replaceWith(node2);
+    parent.insertBefore(node1, afterNode2);
 }
 
 //when the sort button is clicked quicksort is activated
